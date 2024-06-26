@@ -1,0 +1,18 @@
+package lk.ijse.view;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class ProductTm {
+    private String id;
+    private String name;
+
+    private double price ;
+    private String category;
+    private int qty ;
+
+}

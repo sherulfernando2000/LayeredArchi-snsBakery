@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNodeP" prefHeight="800.0" prefWidth="1192.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.OrderFormController">
+   <children>
+      <AnchorPane layoutY="-1.0" prefHeight="70.0" prefWidth="1192.0" style="-fx-background-color: #286155;" stylesheets="@../css/dashboard.css">
+         <children>
+            <JFXButton alignment="TOP_LEFT" buttonType="RAISED" layoutX="192.8" layoutY="4.0" prefHeight="53.0" prefWidth="216.0" style="-fx-border-color: white; -fx-border-radius: 10;" text="ORDER FORM" textFill="WHITE" AnchorPane.leftAnchor="193.0" AnchorPane.rightAnchor="783.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+            <JFXButton alignment="TOP_LEFT" buttonType="RAISED" layoutX="794.0" layoutY="3.0" prefHeight="56.0" prefWidth="236.0" style="-fx-background-color: #0f6789; -fx-border-color: white; -fx-border-radius: 10;" text="PAYMENT FORM" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+            <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="366.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-click-30.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="992.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-click-30.png" />
+               </image>
+            </ImageView>
+            <Line endX="1026.300048828125" endY="7.62939453125E-6" layoutX="167.0" layoutY="65.0" startX="-168.00001525878906" startY="7.62939453125E-6" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="5.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="28.0" layoutY="416.0" prefHeight="365.0" prefWidth="1106.0" stylesheets="@../css/customer.css">
+         <children>
+            <Label layoutX="29.0" layoutY="67.0" prefHeight="32.0" prefWidth="116.0" text="Items:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="111.0" prefHeight="32.0" prefWidth="154.0" text="Gross Amount:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="156.0" prefHeight="32.0" prefWidth="116.0" text="Discount %:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="247.0" prefHeight="32.0" prefWidth="116.0" text="Net Amount:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="202.0" prefHeight="32.0" prefWidth="116.0" text="Total saving:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="285.0" prefHeight="32.0" prefWidth="116.0" text="Card / Cash:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="326.0" prefHeight="32.0" prefWidth="116.0" text="Balance:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="487.0" layoutY="156.0" prefHeight="32.0" prefWidth="143.0" text="Discount Type:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="539.0" layoutY="279.0" prefHeight="32.0" prefWidth="143.0" text="Amount:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="23.0" prefHeight="32.0" prefWidth="116.0" text="Payment ID:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="553.0" layoutY="17.0" prefHeight="32.0" prefWidth="116.0" text="Time:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblPaymentId" layoutX="152.0" layoutY="23.0" prefHeight="32.0" prefWidth="116.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblItem" layoutX="151.0" layoutY="67.0" prefHeight="32.0" prefWidth="116.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblGrossAmount" layoutX="152.0" layoutY="111.0" prefHeight="32.0" prefWidth="116.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalSaving" layoutX="152.0" layoutY="202.0" prefHeight="32.0" prefWidth="116.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblNetAmount" layoutX="151.0" layoutY="247.0" prefHeight="32.0" prefWidth="116.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblBalance" layoutX="152.0" layoutY="326.0" prefHeight="32.0" prefWidth="116.0" style="-fx-background-radius: 5;">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTime" layoutX="605.0" layoutY="17.0" prefHeight="32.0" prefWidth="116.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="cbxCardCash" layoutX="149.0" layoutY="288.0" onAction="#cbxCardCashOnAction" prefHeight="26.0" prefWidth="122.0" />
+            <JFXButton buttonType="RAISED" layoutX="585.0" layoutY="318.0" onAction="#btnPlaceOrderOnAction" prefHeight="32.0" prefWidth="154.0" style="-fx-background-color: #0f6789;" text="Place Order" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <TextField fx:id="txtDiscountPrec" layoutX="152.0" layoutY="160.0" onAction="#txtDiscountPrecOnAction" onKeyPressed="#txtDiscountOnKeyReleased" prefHeight="26.0" prefWidth="116.0" />
+            <JFXComboBox fx:id="cbxDisType" layoutX="608.0" layoutY="159.0" prefHeight="26.0" prefWidth="122.0" />
+            <TextField fx:id="txtAmount" layoutX="611.0" layoutY="285.0" onAction="#txtAmountOnAction" onKeyReleased="#txtSAmountOnKeyReleased" prefHeight="26.0" prefWidth="116.0" />
+            <JFXButton buttonType="RAISED" layoutX="749.0" layoutY="319.0" onAction="#btnPrintBillOnAction" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: #0f6789;" text="Print Bill" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="913.0" layoutY="319.0" onAction="#btnNextOrderOnAction" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: #0f6789;" text="Next Order" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <styleClass>
+            <String fx:value="white-bg" />
+            <String fx:value="bodybg-customer" />
+         </styleClass>
+      </AnchorPane>
+      <AnchorPane layoutX="28.0" layoutY="83.0" prefHeight="297.0" prefWidth="1106.0" style="-fx-background-color: #e7e1e1;" stylesheets="@../css/customer.css">
+         <styleClass>
+            <String fx:value="radius" />
+            <String fx:value="bodybg-payment" />
+            <String fx:value="white-bg" />
+         </styleClass>
+      </AnchorPane>
+      <ImageView fitHeight="51.0" fitWidth="81.0" layoutX="1.0" layoutY="4.0" opacity="0.87" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/sns-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <Line endX="515.7000122070312" endY="-20.00000762939453" layoutX="676.0" layoutY="84.0" startX="-105.79998779296875" startY="-20.00000762939453" stroke="#0f6789" strokeLineCap="ROUND" strokeWidth="5.0" />
+   </children>
+</AnchorPane>

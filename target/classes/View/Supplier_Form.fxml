@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootNode" prefHeight="800.0" prefWidth="1192.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.SupplierFormController">
+   <children>
+      <AnchorPane layoutY="-1.0" prefHeight="70.0" prefWidth="1192.0" style="-fx-background-color: #286155;" stylesheets="@../css/dashboard.css">
+         <children>
+            <JFXButton alignment="TOP_LEFT" buttonType="RAISED" layoutX="79.0" layoutY="3.0" prefHeight="56.0" prefWidth="232.0" style="-fx-background-color: #0f6789;" text="SUPPLIER FORM" textFill="WHITE" AnchorPane.leftAnchor="79.0" AnchorPane.rightAnchor="881.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnIngredient" alignment="TOP_LEFT" buttonType="RAISED" layoutX="466.0" layoutY="4.0" onAction="#btnIngredientOnAction" prefHeight="53.0" prefWidth="266.0" style="-fx-border-color: white; -fx-border-radius: 5;" text="INGREDIENT FORM" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnSupplierOrder" alignment="TOP_LEFT" buttonType="RAISED" layoutX="889.0" layoutY="5.0" onAction="#btnSupplierOrderOnAction" prefHeight="54.0" prefWidth="243.0" style="-fx-border-color: white; -fx-border-radius: 5;" text="SUPPLIER ORDER" textFill="WHITE" AnchorPane.rightAnchor="79.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+            <Line endX="1084.699951171875" endY="7.62939453125E-6" layoutX="102.0" layoutY="66.0" startX="-100.0" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="5.0" />
+            <Line endX="294.29998779296875" endY="-20.00000762939453" layoutX="92.0" layoutY="86.0" startX="-87.79998779296875" startY="-20.000001907348633" stroke="#0f6789" strokeLineCap="ROUND" strokeWidth="5.0" />
+            <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="698.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-click-30.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="1081.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-click-30.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="277.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-click-30.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="34.0" layoutY="74.0" prefHeight="712.0" prefWidth="1139.0" stylesheets="@../css/dashboard.css">
+         <styleClass>
+            <String fx:value="radius" />
+            <String fx:value="white-bg" />
+         </styleClass>
+         <children>
+            <AnchorPane layoutX="24.0" layoutY="10.6" opacity="0.75" prefHeight="340.0" prefWidth="1106.0" style="-fx-background-color: #e7e1e1;" stylesheets="@../css/customer.css" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="10.6">
+               <styleClass>
+                  <String fx:value="radius" />
+                  <String fx:value="white-bg" />
+               </styleClass>
+               <children>
+                  <TableView fx:id="tblSupplier" layoutX="15.2" layoutY="16.2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="14.199999999999989" AnchorPane.leftAnchor="15.2" AnchorPane.rightAnchor="15.200000000000045" AnchorPane.topAnchor="16.2">
+                     <columns>
+                        <TableColumn fx:id="colSupplierId" prefWidth="270.0" text="Supplier ID" />
+                        <TableColumn fx:id="colSupplierName" prefWidth="186.40005493164062" text="Supplier Name" />
+                        <TableColumn fx:id="colPhoneNo" prefWidth="354.39996337890625" text="Phone Number" />
+                        <TableColumn fx:id="colAddress" prefWidth="270.0" text="Address" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="24.0" layoutY="365.0" prefHeight="340.0" prefWidth="1116.0" style="-fx-background-color: #e7e1e1;" stylesheets="@../css/customer.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+               <children>
+                  <Text layoutX="20.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier ID:" wrappingWidth="137.69000244140625">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="txtSupplierId" layoutX="23.0" layoutY="87.0" onAction="#txtSupplierIdOnAction" onKeyReleased="#txtSupplierIDOnKeyReleased" prefHeight="42.0" prefWidth="450.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </TextField>
+                  <Text layoutX="630.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Name:" wrappingWidth="137.69000244140625">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="txtSupplierName" layoutX="630.0" layoutY="87.0" onKeyReleased="#txtSuuplierNameOnKeyReleased" prefHeight="42.0" prefWidth="450.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </TextField>
+                  <Text layoutX="23.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Phone No:" wrappingWidth="158.48995971679688">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="txtSupplierTel" layoutX="26.0" layoutY="191.0" onKeyReleased="#txtSupplierPhoneNoOnKeyReleased" prefHeight="42.0" prefWidth="450.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </TextField>
+                  <Text layoutX="633.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier  Address:" wrappingWidth="137.69000244140625">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="txtSupplierAddress" layoutX="633.0" layoutY="191.0" onKeyReleased="#txtSupplierAddressOnKeyReleased" prefHeight="42.0" prefWidth="450.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </TextField>
+                  <JFXButton buttonType="RAISED" layoutX="948.0" layoutY="279.0" onAction="#btnDeleteOnAction" prefHeight="42.0" prefWidth="137.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 20;" text="Delete" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="804.0" layoutY="279.0" onAction="#btnUpdateOnAction" prefHeight="42.0" prefWidth="137.0" style="-fx-background-color: #e67e22; -fx-background-radius: 20;" text="Update" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="658.0" layoutY="279.0" onAction="#btnSaveOnAction" prefHeight="42.0" prefWidth="137.0" style="-fx-background-color: #2980b9; -fx-background-radius: 20;" text="Save" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnClear" buttonType="RAISED" layoutX="514.0" layoutY="279.0" onAction="#btnClearOnAction" prefHeight="42.0" prefWidth="137.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 20;" text="Clear" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </JFXButton>
+                  <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="610.0" layoutY="289.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/icons8-clear-50.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="760.0" layoutY="290.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/icons8-save-50.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="909.0" layoutY="289.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/icons8-update-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="1048.0" layoutY="289.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/icons8-delete-48.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <styleClass>
+                  <String fx:value="radius" />
+                  <String fx:value="bodybg-customer" />
+                  <String fx:value="white-bg" />
+               </styleClass>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="51.0" fitWidth="81.0" layoutX="1.0" layoutY="4.0" opacity="0.87" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/sns-removebg-preview.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
