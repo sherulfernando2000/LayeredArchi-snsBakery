@@ -33,7 +33,7 @@
                   <String fx:value="white-bg" />
                </styleClass>
                <children>
-                  <TableView fx:id="tblProduct" layoutX="15.2" layoutY="16.2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="14.199999999999989" AnchorPane.leftAnchor="15.2" AnchorPane.rightAnchor="15.200000000000045" AnchorPane.topAnchor="16.2">
+                  <TableView fx:id="tblProduct" layoutX="15.2" layoutY="16.2" onMouseClicked="#rowOnMouseClicked" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="14.199999999999989" AnchorPane.leftAnchor="15.2" AnchorPane.rightAnchor="15.200000000000045" AnchorPane.topAnchor="16.2">
                      <columns>
                         <TableColumn fx:id="colProductId" prefWidth="155.20002287626266" text="Product ID" />
                         <TableColumn fx:id="colProductName" prefWidth="305.5999755859375" text="Product Name" />

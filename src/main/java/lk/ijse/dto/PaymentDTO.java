@@ -1,15 +1,13 @@
-package lk.ijse.model;
+package lk.ijse.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Payment {
+public class PaymentDTO {
     String paymentId;
     String paymentMethod ;
     String date ;

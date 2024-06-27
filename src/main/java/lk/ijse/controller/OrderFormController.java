@@ -9,8 +9,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import lk.ijse.Util.Regex;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.OrderBO;
 import lk.ijse.db.DbConnection;
-import lk.ijse.entity.Customer;
+import lk.ijse.dto.*;
+import lk.ijse.entity.*;
 import lk.ijse.model.*;
 import lk.ijse.view.CartTm;
 import lk.ijse.repository.*;
@@ -114,12 +117,12 @@ public class OrderFormController {
 
     public static int totalQty=0;
 
-    public static  Order order;
+    public static OrderDTO order;
 
-    public  static List<OrderProductDetail> odList;
+    public  static List<OrderProductDetailDTO> odList;
 
 
-
+OrderBO orderBO = (OrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ORDER);
 
     public void initialize(){
 
@@ -132,72 +135,12 @@ public class OrderFormController {
         setCellValueFactory();
     }
 
-    void initializePayment() {
-        getNextPaymentId();
-        lblGrossAmount.setText(String.valueOf(grossTotal));
-        setTime();
-        lblItem.setText(String.valueOf(totalQty));
-        getDiscountType();
-        getCashOrCard();
 
-    }
-
-    private void getCashOrCard() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-        obList.add("Cash");
-        obList.add("Card");
-        cbxCardCash.setItems(obList);
-    }
-
-    private void getDiscountType() {
-        ObservableList<String> obList = FXCollections.observableArrayList();
-        obList.add("seasonal Offer");
-        obList.add("loyal customer");
-        obList.add("Other");
-        cbxDisType.setItems(obList);
-    }
-
-    private void getTotalItemQty() {
-        if (totalQty != 0) {
-            totalQty = 0;
-            for (CartTm cartItem : obList) {
-                totalQty += cartItem.getQty();
-        }
-        }else{
-            for (CartTm cartItem : obList) {
-                totalQty += cartItem.getQty();
-            }
-        }
-
-
-    }
 
     private void setTime() {
         LocalTime now1 = LocalTime.of(LocalTime.now().getHour(), LocalTime.now().getMinute());
         lblTime.setText(String.valueOf(now1));
     }
-
-    private void getNextPaymentId() {
-        try {
-            String currentPaymentId = PaymentRepo.getCurrentPaymentId();
-            String nextpaymentId = generateNextpaymentId(currentPaymentId);
-            lblPaymentId.setText(nextpaymentId);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String generateNextpaymentId(String currentPaymentId) {
-        if(currentPaymentId != null) {
-            String[] split = currentPaymentId.split("P-");  //" ", "2"
-            int idNum = Integer.parseInt(split[1]);
-            return "P-" + ++idNum;
-        }
-        return "P-1";
-    }
-
-
 
 
 
@@ -213,7 +156,7 @@ public class OrderFormController {
     private void getProductDescription() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> descriptionList = ProductRepo.getDescription();
+            List<String> descriptionList = orderBO.getProductDescription();
             for (String description: descriptionList) {
                 obList.add(description);
             }
@@ -227,12 +170,12 @@ public class OrderFormController {
 
     private void getCurrentOrderId() {
         try {
-            String currentId = OrderRepo.getCurrentId();
+            String currentId = orderBO.getCurrentId();
             String nextOrderId = generateNextOrderId(currentId);
             lblOrderId.setText(nextOrderId);
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
 
@@ -334,14 +277,14 @@ public class OrderFormController {
         double grossAmount = Double.parseDouble(lblGrossTotal.getText());
         String customerId = lblCustomerId.getText();
 
-        order = new Order(orderId,status,date,grossAmount,customerId);
+        order = new OrderDTO(orderId,status,date,grossAmount,customerId);
 
         odList = new ArrayList<>();
 
         for (int i = 0; i < tblOrder.getItems().size(); i++) {
             CartTm tm = obList.get(i);
 
-            OrderProductDetail od = new OrderProductDetail(
+            OrderProductDetailDTO od = new OrderProductDetailDTO(
                     orderId,
                     tm.getCode(),
                     tm.getUnitPrice(),
@@ -376,7 +319,7 @@ public class OrderFormController {
     void cmbProductOnAction(ActionEvent event) {
         String description = cmbDescription.getValue();
         try {
-            Product product = ProductRepo.searchByDescription(description);
+            ProductDTO product = orderBO.searchProductByDescription(description);
             if (product != null) {
                 lblCode.setText(product.getId());
                 lblUnitPrice.setText(String.valueOf(product.getPrice()));
@@ -396,7 +339,7 @@ public class OrderFormController {
     void txtTelOnAction(ActionEvent event) {
         String tel = txtCustomerTel.getText();
         try {
-            Customer customer = CustomerRepo.searchTel(tel);
+            CustomerDTO customer = orderBO.searchCustomerTel(tel);
             if (customer != null) {
                 lblCustomerId.setText(customer.getId());
                 lblCustomerName.setText(customer.getName());
@@ -406,8 +349,8 @@ public class OrderFormController {
             }
 
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
@@ -508,7 +451,65 @@ public class OrderFormController {
     private AnchorPane rootNodeP;
 
 
+    void initializePayment() {
+        getNextPaymentId();
+        lblGrossAmount.setText(String.valueOf(grossTotal));
+        setTime();
+        lblItem.setText(String.valueOf(totalQty));
+        getDiscountType();
+        getCashOrCard();
 
+    }
+
+    private void getCashOrCard() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+        obList.add("Cash");
+        obList.add("Card");
+        cbxCardCash.setItems(obList);
+    }
+
+    private void getDiscountType() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+        obList.add("seasonal Offer");
+        obList.add("loyal customer");
+        obList.add("Other");
+        cbxDisType.setItems(obList);
+    }
+
+    private void getTotalItemQty() {
+        if (totalQty != 0) {
+            totalQty = 0;
+            for (CartTm cartItem : obList) {
+                totalQty += cartItem.getQty();
+            }
+        }else{
+            for (CartTm cartItem : obList) {
+                totalQty += cartItem.getQty();
+            }
+        }
+
+
+    }
+
+    private void getNextPaymentId() {
+        try {
+            String currentPaymentId = orderBO.getCurrentPaymentId();
+            String nextpaymentId = generateNextpaymentId(currentPaymentId);
+            lblPaymentId.setText(nextpaymentId);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateNextpaymentId(String currentPaymentId) {
+        if(currentPaymentId != null) {
+            String[] split = currentPaymentId.split("P-");  //" ", "2"
+            int idNum = Integer.parseInt(split[1]);
+            return "P-" + ++idNum;
+        }
+        return "P-1";
+    }
     /*public void initialize(){
 
 
@@ -567,12 +568,14 @@ public class OrderFormController {
             String discountType = cbxDisType.getValue();
             double discountPrecentage = Double.parseDouble(txtDiscountPrec.getText());
 
-            Payment payment = new Payment(paymentId, paymentMethod, date, discountAmount, totalAmount, orderId,discountType, discountPrecentage);
+            PaymentDTO payment = new PaymentDTO(paymentId, paymentMethod, date, discountAmount, totalAmount, orderId,discountType, discountPrecentage);
 
-            PlaceOrder po = new PlaceOrder(order,odList,payment);
+           // PlaceOrder po = new PlaceOrder(order,odList,payment);
+            OrderDTO orderDTO = new OrderDTO(order,odList,payment);
 
             try {
-                boolean isPlaced =  PlaceOrderRepo.placeOrder(po);
+
+                boolean isPlaced =  orderBO.placeOrder(orderDTO);/*PlaceOrderRepo.placeOrder(po);*/
                 if(isPlaced) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
 

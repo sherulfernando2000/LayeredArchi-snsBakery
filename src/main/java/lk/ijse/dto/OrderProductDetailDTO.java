@@ -1,4 +1,4 @@
-package lk.ijse.model;
+package lk.ijse.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 
-public class OrderProductDetail {
+public class OrderProductDetailDTO {
     String orderId;
     String productId;
 

@@ -1,7 +1,7 @@
 package lk.ijse.repository;
 
 import lk.ijse.db.DbConnection;
-import lk.ijse.model.Order;
+import lk.ijse.entity.Order;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

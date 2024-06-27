@@ -1,8 +1,8 @@
 package lk.ijse.repository;
 
 import lk.ijse.db.DbConnection;
-import lk.ijse.model.OrderProductDetail;
-import lk.ijse.model.Product;
+import lk.ijse.entity.OrderProductDetail;
+import lk.ijse.entity.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -8,9 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
-import lk.ijse.model.Product;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.ProductBO;
+import lk.ijse.dto.ProductDTO;
+import lk.ijse.entity.Product;
 import lk.ijse.view.ProductTm;
 import lk.ijse.repository.ProductRepo;
 import lk.ijse.repository.WasteRepo;
@@ -57,6 +61,8 @@ public class ProductFormController {
     @FXML
     private TextField txtProductQty;
 
+    ProductBO productBO = (ProductBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCT);
+
     public void initialize(){
         getProductCategory();
         setCellValueFactory();
@@ -77,8 +83,8 @@ public class ProductFormController {
         ObservableList<ProductTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<Product> productList = ProductRepo.getAll();
-            for (Product product : productList) {
+            List<ProductDTO> productList = productBO.getAllProduct();
+            for (ProductDTO product : productList) {
                 ProductTm tm = new ProductTm(
                         product.getId(),
                         product.getName(),
@@ -92,8 +98,8 @@ public class ProductFormController {
             }
 
             tblProduct.setItems(obList);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -114,10 +120,11 @@ public class ProductFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtProductId.getText();
+      //  String id = txtProductId.getText();
+        String id = tblProduct.getSelectionModel().getSelectedItem().getId();
 
         try {
-            boolean isDeleted = ProductRepo.delete(id);
+            boolean isDeleted = productBO.deleteProduct(id);
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION,"product deleted successfully.").show();
                 clearFields();
@@ -125,7 +132,7 @@ public class ProductFormController {
 
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
@@ -140,20 +147,20 @@ public class ProductFormController {
         int qty = Integer.parseInt(txtProductQty.getText());
         double price = Double.parseDouble(txtProductIPrice.getText());
 
-        Product product = new Product(id,name,category,qty,price);
+        ProductDTO product = new ProductDTO(id,name,category,qty,price);
 
         switch (isValied()) {
             case 0:
                 try {
-                    boolean isSaved = ProductRepo.save(product);
+                    boolean isSaved = productBO.saveProduct(product);
                     if (isSaved ) {
                         new Alert(Alert.AlertType.CONFIRMATION,"product saved successfully.").show();
                         clearFields();
                         loadAllProducts();
 
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch (SQLException | ClassNotFoundException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 }
                 ;
                 break;
@@ -194,18 +201,18 @@ public class ProductFormController {
         int qty = Integer.parseInt(txtProductQty.getText());
         double price = Double.parseDouble(txtProductIPrice.getText());
 
-        Product product = new Product(id,name,category,qty,price);
+        ProductDTO product = new ProductDTO(id,name,category,qty,price);
 
         try {
-            boolean isUpdated = ProductRepo.update(product);
+            boolean isUpdated = productBO.updateProduct(product);
             if (isUpdated ) {
                 new Alert(Alert.AlertType.CONFIRMATION,"product updated successfully.").show();
                 clearFields();
                 loadAllProducts();
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
 
@@ -218,9 +225,9 @@ public class ProductFormController {
     public void txtsearchIdOnAction(ActionEvent actionEvent) {
         String id = txtProductId.getText();
 
-        Product product = null;
+        ProductDTO product = null;
         try {
-            product = ProductRepo.searchById(id);
+            product = productBO.searchProductId(id);
             if (product != null) {
                 txtProductId.setText(product.getId());
                 txtProductIName.setText(product.getName());
@@ -230,8 +237,8 @@ public class ProductFormController {
             } else {
                 new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
     }
@@ -280,6 +287,27 @@ public class ProductFormController {
         if (!Regex.setTextColor(lk.ijse.Util.TextField.PRICE,txtProductIPrice)) return 3;
         if (!Regex.setTextColor(lk.ijse.Util.TextField.QTY,txtProductQty)) return 4;
         return 0;
+    }
+
+    @FXML
+    void rowOnMouseClicked(MouseEvent event) {
+        String id = tblProduct.getSelectionModel().getSelectedItem().getId();
+
+        try {
+           ProductDTO product = productBO.searchProductId(id);
+            if (product != null) {
+                txtProductId.setText(product.getId());
+                txtProductIName.setText(product.getName());
+                cmbProductCategory.setValue(product.getCategory());
+                txtProductQty.setText(String.valueOf(product.getQty()));
+                txtProductIPrice.setText(String.valueOf(product.getPrice()));
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+
     }
 
 

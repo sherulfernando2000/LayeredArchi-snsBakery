@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.entity.Employee;
+import lk.ijse.entity.Product;
 import lk.ijse.model.*;
 import lk.ijse.view.ProductEmployeeTm;
 import lk.ijse.repository.*;

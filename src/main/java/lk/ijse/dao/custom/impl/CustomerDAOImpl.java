@@ -57,13 +57,16 @@ public class CustomerDAOImpl implements CustomerDAO {
     public  Customer searchTel(String tel) throws SQLException,ClassNotFoundException  {
         String sql = "SELECT * FROM customer WHERE phoneNo= ?";
         ResultSet resultSet = SQLUtil.execute(sql,tel);
-        String cus_id = resultSet.getString(1);
-        String name = resultSet.getString(2);
-        String cus_tel = resultSet.getString(3);
-        String address = resultSet.getString(4);
+        if (resultSet.next()) {
+            String cus_id = resultSet.getString(1);
+            String name = resultSet.getString(2);
+            String cus_tel = resultSet.getString(3);
+            String address = resultSet.getString(4);
 
-        Customer customer = new Customer(cus_id, name, cus_tel, address);
-        return customer;
+            Customer customer = new Customer(cus_id, name, cus_tel, address);
+            return customer;
+        }
+        return null;
 
     }
     @Override
