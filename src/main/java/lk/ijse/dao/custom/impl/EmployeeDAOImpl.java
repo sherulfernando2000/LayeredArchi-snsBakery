@@ -103,7 +103,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     public  Employee searchByName(String nameValue) throws SQLException {
         String sql = "SELECT * FROM employee WHERE eName = ?";
-        ResultSet resultSet = SQLUtil.execute(sql);
+        ResultSet resultSet = SQLUtil.execute(sql,nameValue);
 
         if (resultSet.next()) {
             return new Employee(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDouble(6));

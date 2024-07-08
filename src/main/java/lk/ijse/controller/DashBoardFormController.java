@@ -15,6 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.DashBoardBO;
+import lk.ijse.dto.CustomMostSellItemDTO;
 import lk.ijse.view.DailyRevenueTm;
 import lk.ijse.view.MostSellItemTm;
 import lk.ijse.repository.*;
@@ -98,6 +101,8 @@ public class DashBoardFormController {
 
     private Set< String> possibleSugg;
 
+    DashBoardBO dashBoardBO = (DashBoardBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.DASHBOARD);
+
 
 
 
@@ -125,19 +130,30 @@ public class DashBoardFormController {
     }
 
     public void initialize() throws SQLException {
-        int noOfCustomer = CustomerRepo.getAll().size();
-        txtNoOfCustomers.setText(String.valueOf(noOfCustomer));
-        int noOfOrders = OrderRepo.getOderCount();
-        txtNoOfOrders.setText(String.valueOf(noOfOrders));
-        int noOfProduct = ProductRepo.getAll().size();
-        txtNoOfProducts.setText(String.valueOf(noOfProduct));
-        int noOfEmployee = EmployeeRepo.getAll().size();
-        txtNoOfEmployee.setText(String.valueOf(noOfEmployee));
-        double dailyRevenue = DailyReportRepo.getDailyRevenue();
-        txtDailyRevenue.setText(String.valueOf(dailyRevenue));
-        double monthlyRevenue = weeklyReportRepo.getMonthlyRevenue();
-        txtMonthlyRevenue.setText(String.valueOf(monthlyRevenue));
+        //int noOfCustomer = CustomerRepo.getAll().size();
+        int noOfCustomer = 0;
+        try {
+            noOfCustomer = dashBoardBO.getAllCustomer().size();
+            txtNoOfCustomers.setText(String.valueOf(noOfCustomer));
+            //int noOfOrders = OrderRepo.getOderCount();
+            int noOfOrders = dashBoardBO.getOderCount();
+            txtNoOfOrders.setText(String.valueOf(noOfOrders));
+            //int noOfProduct = ProductRepo.getAll().size();
+            int noOfProduct = dashBoardBO.getAllProduct().size();
+            txtNoOfProducts.setText(String.valueOf(noOfProduct));
+            //int noOfEmployee = EmployeeRepo.getAll().size();
+            int noOfEmployee = dashBoardBO.getAllEmployee().size();
+            txtNoOfEmployee.setText(String.valueOf(noOfEmployee));
+            //double dailyRevenue = DailyReportRepo.getDailyRevenue();
+            double dailyRevenue = dashBoardBO.getDailyRevenue();
+            txtDailyRevenue.setText(String.valueOf(dailyRevenue));
+            //double monthlyRevenue = weeklyReportRepo.getMonthlyRevenue();
+            double monthlyRevenue = dashBoardBO.getMonthlyRevenue();
+            txtMonthlyRevenue.setText(String.valueOf(monthlyRevenue));
 
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         setDatetime();
         //lineChart();
         lineChart1();
@@ -150,7 +166,7 @@ public class DashBoardFormController {
     public void setTxtSearchByProduct(){
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> descriptionList = ProductRepo.getDescription();
+            List<String> descriptionList = dashBoardBO.getProductDescription();/*ProductRepo.getDescription();*/
             for (String description: descriptionList) {
                 obList.add(description);
             }
@@ -162,15 +178,6 @@ public class DashBoardFormController {
             throw new RuntimeException(e);
         }
 
-
-        /*try {
-            possibleSuggestion = ProductRepo.getDescription();
-
-            possibleSugg = new HashSet<>(Arrays.asList(possibleSuggestion));
-            TextFields.bindAutoCompletion(txtSearchByProduct,possibleSugg);
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        }*/
 
 
 
@@ -262,15 +269,16 @@ public class DashBoardFormController {
 
 
     public void lineChart1(){
-        XYChart.Series series1 = new XYChart.Series();  // represent a series of data points on the chart.
-        series1.setName("Bakery");
-        List<DailyRevenueTm> dailyRevenueTmList = DashboardRepo.getDateCount();
 
-        for (DailyRevenueTm dailyRevenue: dailyRevenueTmList) {
-            series1.getData().add(new XYChart.Data<>(dailyRevenue.getDate(),dailyRevenue.getCount()));  //xy chart class eke thiyana static innerclass ekak
+        try {
+            XYChart.Series series1 = dashBoardBO.getDateCount();
+            barChart.getData().addAll(series1);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-        barChart.getData().addAll(series1);
-        }
+
+
+    }
 
 
 
@@ -284,9 +292,9 @@ public class DashBoardFormController {
     public void pieChartConnect() throws SQLException {
         //ObservableList<MostSellItemTm> obList = FXCollections.observableArrayList();
 
-        List<MostSellItemTm> itemList = DashboardRepo.getMostSellItem();
+        List<CustomMostSellItemDTO> itemList = dashBoardBO.getMostSellItem(); /*DashboardRepo.getMostSellItem();*/
 
-        for (MostSellItemTm sellItem : itemList) {
+        for (CustomMostSellItemDTO sellItem : itemList) {
 
             ObservableList<PieChart.Data> pieChartData =
                     FXCollections.observableArrayList(
@@ -303,7 +311,7 @@ public class DashBoardFormController {
 
         if (!desc.isEmpty()) {
             try {
-                int qty = DashboardRepo.getProductSold(desc);
+                int qty = dashBoardBO.getProductSold(desc);/*DashboardRepo.getProductSold(desc);*/
                 txtProductSoldSearch.setText(String.valueOf(qty));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -315,7 +323,7 @@ public class DashBoardFormController {
     void txtSearchBydateOnAction(ActionEvent event) {
         if (!txtSearchByDate.getText().isEmpty()) {
             try {
-                double dailyRevenue = DashboardRepo.getDailyRevenue(txtSearchByDate.getText());
+                double dailyRevenue = dashBoardBO.getDailyRevenue(txtSearchByDate.getText());//DashboardRepo.getDailyRevenue(txtSearchByDate.getText());
                 txtDailyRevenueSearch.setText(String.valueOf(dailyRevenue));
             } catch (SQLException e) {
                 throw new RuntimeException(e.getMessage());
@@ -334,105 +342,6 @@ public class DashBoardFormController {
     }
 
 
-    /*public void lineChart1(){
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Bakery");
-
-        PreparedStatement stm = null;
-        try {
-            stm = DbConnection.getInstance().getConnection().prepareStatement("SELECT\n" +
-                    "    date,\n" +
-                    "    COUNT(orderId) AS orderCount\n" +
-                    "FROM\n" +
-                    "    orders\n" +
-                    "WHERE\n" +
-                    "    date >= CURDATE() - INTERVAL 6 DAY  -- Select data for the last 7 days\n" +
-                    "GROUP BY\n" +
-                    "    date\n" +
-                    "ORDER BY\n" +
-                    "    date ASC;\n");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        ResultSet rst = null;
-        try {
-            rst = stm.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        while (true) {
-            try {
-                if (!rst.next()) break;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            String date = null;
-            try {
-                date = rst.getString(1);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            int count = 0;
-            try {
-                count = rst.getInt(2);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            series1.getData().add(new XYChart.Data<>(date, count));
-        }
-        barChart1.getData().addAll(series1);
-    }*/
-
-    /*  public void lineChart(){
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Bakery");
-
-    PreparedStatement stm = null;
-        try {
-        stm = DbConnection.getInstance().getConnection().prepareStatement("SELECT date, SUM(totalAmount) AS totalAmountSum\n" +
-                "FROM payment\n" +
-                "WHERE date >= CURDATE() - INTERVAL 6 DAY\n" +
-                "GROUP BY date\n" +
-                "ORDER BY date ASC;");
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-    ResultSet rst = null;
-        try {
-        rst = stm.executeQuery();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-        while (true) {
-        try {
-            if (!rst.next()) break;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        String date = null;
-        try {
-            date = rst.getString(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int count = 0;
-        try {
-            count = rst.getInt(2);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        series1.getData().add(new XYChart.Data<>(date, count));
-    }
-        barChart.getData().addAll(series1);
-    }*/
 
 
 }

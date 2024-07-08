@@ -9,9 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.ProductEmployeeBO;
+import lk.ijse.dto.EmployeeDTO;
+import lk.ijse.dto.ProductDTO;
+import lk.ijse.dto.ProductEmployeeDTO;
 import lk.ijse.entity.Employee;
 import lk.ijse.entity.Product;
-import lk.ijse.model.*;
+import lk.ijse.entity.ProductEmployee;
 import lk.ijse.view.ProductEmployeeTm;
 import lk.ijse.repository.*;
 
@@ -61,6 +66,8 @@ public class ProductEmployeeFormController {
     @FXML
     private TextField txtProductId;
 
+    ProductEmployeeBO productEmployeeBO = (ProductEmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCT_EMPLOYEE);
+
     public void initialize(){
         setCellValueFactory();
         loadAllProductEmployee();
@@ -72,8 +79,8 @@ public class ProductEmployeeFormController {
         ObservableList<ProductEmployeeTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<ProductEmployee> orderList = ProductEmployeeRepo.getAll();
-            for (ProductEmployee order : orderList) {
+            List<ProductEmployeeDTO> orderList = productEmployeeBO.getAllProductEmployee();//ProductEmployeeRepo.getAll();
+            for (ProductEmployeeDTO order : orderList) {
 
                 String eName= EmployeeRepo.getName(order.getEmployeeId());
                 String pName = ProductRepo.getName(order.getProductId());
@@ -108,7 +115,7 @@ public class ProductEmployeeFormController {
     private void getEmployeeName(){
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> nameList = EmployeeRepo.getName();
+            List<String> nameList = productEmployeeBO.getEmployeeName();//EmployeeRepo.getName();
             for (String name: nameList) {
                 obList.add(name);
             }
@@ -122,7 +129,7 @@ public class ProductEmployeeFormController {
     private void getProductName() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> descriptionList = ProductRepo.getName();
+            List<String> descriptionList = productEmployeeBO.getProductName();//ProductRepo.getName();
             for (String description: descriptionList) {
                 obList.add(description);
             }
@@ -137,7 +144,8 @@ public class ProductEmployeeFormController {
     void btnDeleteOnAction(ActionEvent event) {
         ProductEmployeeTm productEmployeeTm = tblTask.getSelectionModel().getSelectedItem();
         try {
-            boolean isDeleted = ProductEmployeeRepo.detele(productEmployeeTm.getEId(), productEmployeeTm.getPId(),productEmployeeTm.getAssignmentType());
+            //boolean isDeleted = ProductEmployeeRepo.detele(productEmployeeTm.getEId(), productEmployeeTm.getPId(),productEmployeeTm.getAssignmentType());
+            boolean isDeleted = productEmployeeBO.deleteProductEmployee(productEmployeeTm.getEId(), productEmployeeTm.getPId(), productEmployeeTm.getAssignmentType());
             new Alert(Alert.AlertType.CONFIRMATION,"Supplier Order Deleted.").show();
 
 
@@ -158,10 +166,10 @@ public class ProductEmployeeFormController {
         String assignmentType = txtAssignmentType.getText();
 
 
-        ProductEmployee productEmployee = new ProductEmployee(employeeId,productId,assignmentType );
+        ProductEmployeeDTO productEmployee = new ProductEmployeeDTO(employeeId,productId,assignmentType );
 
         try {
-            boolean isSaved = ProductEmployeeRepo.save(productEmployee);
+            boolean isSaved = productEmployeeBO.saveProductEmployee(productEmployee);//ProductEmployeeRepo.save(productEmployee);
             if (isSaved ) {
                 new Alert(Alert.AlertType.CONFIRMATION,"supplier order saved").show();
                 loadAllProductEmployee();
@@ -177,7 +185,7 @@ public class ProductEmployeeFormController {
     void cmbEmployeeNameOnAction(ActionEvent event) {
         String nameValue = cmbEmployeeName.getValue();
         try {
-            Employee employee = EmployeeRepo.searchByName(nameValue);
+            EmployeeDTO employee = productEmployeeBO.searchEmployeeByName(nameValue);//EmployeeRepo.searchByName(nameValue);
             if (employee != null) {
                 txtEmployeeId.setText(employee.getEmployeeId());
 
@@ -194,7 +202,7 @@ public class ProductEmployeeFormController {
     void cmbProductNameOnAction(ActionEvent event) {
         String nameValue = cmbProductName.getValue();
         try {
-            Product product = ProductRepo.searchByName(nameValue);
+            ProductDTO product = productEmployeeBO.searchProductByName(nameValue);//ProductRepo.searchByName(nameValue);
             if (product != null) {
                 txtProductId.setText(product.getId());
 

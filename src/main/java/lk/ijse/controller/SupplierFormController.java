@@ -11,7 +11,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import lk.ijse.Util.Regex;
-import lk.ijse.model.Supplier;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.SupplierBO;
+import lk.ijse.dto.SupplierDTO;
+import lk.ijse.entity.Supplier;
 import lk.ijse.view.SupplierTm;
 import lk.ijse.repository.SupplierRepo;
 import javafx.scene.layout.AnchorPane;
@@ -60,6 +63,8 @@ public class SupplierFormController {
     @FXML
     private TableView<SupplierTm> tblSupplier;
 
+    SupplierBO supplierBO = (SupplierBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER);
+
     public void initialize(){
         setCellValueFactory();
         loadAllSuppliers();
@@ -68,8 +73,8 @@ public class SupplierFormController {
     private void loadAllSuppliers() {
         ObservableList<SupplierTm> obList = FXCollections.observableArrayList();
         try {
-            List<Supplier> supplierList = SupplierRepo.getAll();
-            for (Supplier supplier : supplierList) {
+            List<SupplierDTO> supplierList = supplierBO.getAllSupplier();
+            for (SupplierDTO supplier : supplierList) {
                 SupplierTm tm = new SupplierTm(
                         supplier.getId(),
                         supplier.getName(),
@@ -81,8 +86,8 @@ public class SupplierFormController {
             }
 
             tblSupplier.setItems(obList);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
     }
@@ -102,15 +107,16 @@ public class SupplierFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtSupplierId.getText();
+        //String id = txtSupplierId.getText();
+        String id = tblSupplier .getSelectionModel().getSelectedItem().getId();
 
         try {
-            boolean isDeleted = SupplierRepo.delete(id);
+            boolean isDeleted = supplierBO.deleteSupplier(id);
             new Alert(Alert.AlertType.CONFIRMATION,"Supplier Deleted.").show();
             clearFields();
             loadAllSuppliers();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -121,19 +127,19 @@ public class SupplierFormController {
         String tel = txtSupplierTel.getText();
         String address = txtSupplierAddress.getText();
 
-        Supplier supplier = new Supplier(id,name,tel,address);
+        SupplierDTO supplier = new SupplierDTO(id,name,tel,address);
 
         switch (isValied()) {
             case 0:
                 try {
-                    boolean isSaved = SupplierRepo.save(supplier);
+                    boolean isSaved = supplierBO.saveSupplier(supplier);
                     if (isSaved) {
                         new Alert(Alert.AlertType.CONFIRMATION, "supplier saved").show();
                         clearFields();
                         loadAllSuppliers();
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch (SQLException | ClassNotFoundException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 }
                 ;
                 break;
@@ -175,17 +181,17 @@ public class SupplierFormController {
         String tel = txtSupplierTel.getText();
         String address = txtSupplierAddress.getText();
 
-        Supplier supplier = new Supplier(id,name,tel,address);
+        SupplierDTO supplier = new SupplierDTO(id,name,tel,address);
 
         try {
-            boolean isUpdated = SupplierRepo.update(supplier);
+            boolean isUpdated = supplierBO.updateSupplier(supplier);
             if (isUpdated ) {
                 new Alert(Alert.AlertType.CONFIRMATION,"supplier updated").show();
                 clearFields();
                 loadAllSuppliers();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 

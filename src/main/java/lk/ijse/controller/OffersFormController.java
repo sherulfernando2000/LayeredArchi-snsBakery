@@ -7,6 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.OffersBO;
+import lk.ijse.dto.CustomerDTO;
 import lk.ijse.entity.Customer;
 import lk.ijse.model.EmailUtil;
 import lk.ijse.repository.CustomerRepo;
@@ -27,6 +30,8 @@ public class OffersFormController {
     @FXML
     private TextField txtSubject;
 
+    OffersBO offersBO = (OffersBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.OFFERS);
+
 
     @FXML
     void btnSendOnAction(ActionEvent event) {
@@ -34,14 +39,14 @@ public class OffersFormController {
             emailSent();
         } catch (MessagingException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
-    public void emailSent() throws MessagingException, SQLException {
+    public void emailSent() throws MessagingException, SQLException, ClassNotFoundException {
 
-        List<Customer> customerList = CustomerRepo.getAll();
+        List<CustomerDTO> customerList = offersBO.getAllCustomer();//CustomerRepo.getAll();
 
         for (int i = 0; i < 3/*customerList.size()*/; i++) {
             String subject = txtSubject.getText();

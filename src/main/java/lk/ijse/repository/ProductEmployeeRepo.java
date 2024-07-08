@@ -1,10 +1,8 @@
 package lk.ijse.repository;
 
 import lk.ijse.db.DbConnection;
-import lk.ijse.model.ProductEmployee;
-import lk.ijse.model.SupplierOrder;
+import lk.ijse.entity.ProductEmployee;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,7 +1,7 @@
 package lk.ijse.repository;
 
 import lk.ijse.db.DbConnection;
-import lk.ijse.model.SupplierOrder;
+import lk.ijse.entity.SupplierOrder;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

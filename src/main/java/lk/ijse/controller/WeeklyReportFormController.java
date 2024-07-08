@@ -12,6 +12,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.WeeklyReportBO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.view.WeeklyReportTm;
 import lk.ijse.repository.weeklyReportRepo;
@@ -48,6 +50,8 @@ public class WeeklyReportFormController {
     @FXML
     private TableView<WeeklyReportTm> tableWeeklyReport;
 
+    WeeklyReportBO weeklyReportBO = (WeeklyReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.WEEKLYREPORT);
+
     public void initialize(){
         setCellValueFactory();
         loadAllWeeklyReport();
@@ -64,7 +68,7 @@ public class WeeklyReportFormController {
     private void loadAllWeeklyReport(){
         ObservableList<WeeklyReportTm> obList = FXCollections.observableArrayList();
         try {
-            List<WeeklyReportTm> repoList = weeklyReportRepo.getAll();
+            List<WeeklyReportTm> repoList = weeklyReportBO.getAllWeek();
             for (WeeklyReportTm weeklyReportTm: repoList) {
                 WeeklyReportTm tm = new WeeklyReportTm(
                         weeklyReportTm.getWeekStart(),
@@ -84,58 +88,13 @@ public class WeeklyReportFormController {
     }
 
     public void lineChart1(){
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Bakery");
+       try {
+           XYChart.Series series1 = weeklyReportBO.getlineChart1();
+           barChart1.getData().addAll(series1);
+       } catch (Exception e) {
+           throw new RuntimeException(e);
+       }
 
-        PreparedStatement stm = null;
-        try {
-            stm = DbConnection.getInstance().getConnection().prepareStatement("SELECT\n" +
-                    "    DATE_FORMAT(MIN(o.date), '%Y-%m-%d') AS WeekStartDate,\n" +
-                    "    DATE_FORMAT(MAX(o.date), '%Y-%m-%d') AS WeekEndDate,\n" +
-                    "    COUNT(*) AS WeeklyOrders,\n" +
-                    "    SUM(o.totalAmount) AS TotalAmount\n" +
-                    "FROM\n" +
-                    "    orders o\n" +
-                    "WHERE\n" +
-                    "    o.date BETWEEN (SELECT MIN(date) FROM orders) AND (SELECT MAX(date) FROM orders)\n" +
-                    "GROUP BY\n" +
-                    "    YEARWEEK(o.date, 1)\n" +
-                    "ORDER BY\n" +
-                    "    WeekStartDate;\n");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        ResultSet rst = null;
-        try {
-            rst = stm.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        while (true) {
-            try {
-                if (!rst.next()) break;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            String date = null;
-            try {
-                date = rst.getString(2);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            int count = 0;
-            try {
-                count = rst.getInt(4);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            series1.getData().add(new XYChart.Data<>(date, count));
-        }
-        barChart1.getData().addAll(series1);
     }
 
 

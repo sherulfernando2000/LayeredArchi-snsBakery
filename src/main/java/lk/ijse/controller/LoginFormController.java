@@ -13,6 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.Util.Regex;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.LoginBO;
 import lk.ijse.repository.UserRepo;
 
 import java.io.IOException;
@@ -27,13 +29,14 @@ public class LoginFormController {
     public PasswordField txtPassword;
     public AnchorPane rootNode;
 
+    LoginBO loginBO = (LoginBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.LOGIN);
 
     public void loginbtnOnAction(ActionEvent actionEvent) throws IOException {
         String userName = txtUserName.getText();
         String pw = txtPassword.getText();
         if(!userName.isEmpty() && !pw.isEmpty()){
             try {
-                boolean isCorrect = UserRepo.checkCredential(userName, pw);
+                boolean isCorrect = loginBO.checkUserCredential(userName,pw);//UserRepo.checkCredential(userName, pw);
                 if (isCorrect ) {
                     navigateToDashBoard(userName);
                 }
@@ -51,20 +54,6 @@ public class LoginFormController {
 
 
     }
-
-   /* private void navigateToDashBoard() throws IOException {
-        AnchorPane rootNode = FXMLLoader.load(this.getClass().getResource("/view/dashboard_form.fxml"));
-
-        Scene scene = new Scene(rootNode);
-
-        Stage stage = (Stage) this.rootNode.getScene().getWindow();
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setTitle("Bakery Management System");
-        Image icon = new Image(getClass().getResourceAsStream("src/main/resources/icon/sns-removebg-preview.png"));
-        // Set the custom icon for the stage
-        stage.getIcons().add(icon);
-    }*/
 
     private void navigateToDashBoard(String userName) throws IOException {
         try {

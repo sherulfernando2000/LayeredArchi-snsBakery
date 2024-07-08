@@ -12,8 +12,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.Util.Regex;
-import lk.ijse.model.User;
-import lk.ijse.repository.CustomerRepo;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.SignupBO;
+import lk.ijse.dto.UserDTO;
+import lk.ijse.entity.User;
 import lk.ijse.repository.UserRepo;
 
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class SignUpFormController {
     private TextField txtUserName;
 
 
-
+SignupBO signupBO = (SignupBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SIGNUP);
 
     public void signupbtnOnAction(ActionEvent actionEvent) {
         String userName = txtUserName.getText();
@@ -48,19 +50,19 @@ public class SignUpFormController {
         String role = txtRole.getText();
         String phoneNo = txtPhoneNo.getText();
 
-        User user = new User(userName, password, phoneNo, role);
+        UserDTO user = new UserDTO(userName, password, phoneNo, role);
 
         switch (isValied()){
             case 0:
                 try {
-                    boolean isSaved = UserRepo.saveUser(user);
+                    boolean isSaved = signupBO.saveUser(user);//UserRepo.saveUser(user);
                     if (isSaved ) {
                         new Alert(Alert.AlertType.CONFIRMATION,"user saved.").show();
                         clearFields();
                     }
 
-                } catch (SQLException e) {
-                    throw new RuntimeException(e.getMessage());
+                } catch (SQLException | ClassNotFoundException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 };
                 break;
 

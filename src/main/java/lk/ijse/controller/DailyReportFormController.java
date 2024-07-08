@@ -11,6 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.DailyReportBO;
+import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
 import lk.ijse.view.DailyReportTm;
 import lk.ijse.view.DailyWasteReportTm;
@@ -74,7 +77,7 @@ public class DailyReportFormController {
     private TableView<DailyWasteReportTm> tblWaste;
 
 
-
+DailyReportBO dailyReportBO = (DailyReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.DAILYREPORT);
 
     public void initialize(){
         setCellValueFactory();
@@ -94,7 +97,7 @@ public class DailyReportFormController {
     private void loadAllDailyReport(){
         ObservableList<DailyReportTm> obList = FXCollections.observableArrayList();
         try {
-            List<DailyReportTm> repoList = DailyReportRepo.getAll();
+            List<DailyReportTm> repoList = dailyReportBO.getAll();/*DailyReportRepo.getAll();*/
             for (DailyReportTm dailyReportTm : repoList) {
                 DailyReportTm tm = new DailyReportTm(
                         dailyReportTm.getDay(),
@@ -121,50 +124,29 @@ public class DailyReportFormController {
     }
 
     public void lineChart(){
-        XYChart.Series series1 = new XYChart.Series();
+        /*XYChart.Series series1 = new XYChart.Series();
         series1.setName("Bakery");
 
-        PreparedStatement stm = null;
-        try {
-            stm = DbConnection.getInstance().getConnection().prepareStatement("SELECT date, SUM(totalAmount) AS totalAmountSum\n" +
-                    "FROM payment\n" +
-                    "WHERE date >= CURDATE() - INTERVAL 6 DAY\n" +
-                    "GROUP BY date\n" +
-                    "ORDER BY date ASC;");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        ResultSet rst = null;
-        try {
-            rst = stm.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        while (true) {
-            try {
-                if (!rst.next()) break;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            String date = null;
-            try {
-                date = rst.getString(1);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            int count = 0;
-            try {
-                count = rst.getInt(2);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        ResultSet rst = SQLUtil.execute("SELECT date, SUM(totalAmount) AS totalAmountSum\n" +
+                "FROM payment\n" +
+                "WHERE date >= CURDATE() - INTERVAL 6 DAY\n" +
+                "GROUP BY date\n" +
+                "ORDER BY date ASC;");
+        while (rst.next()){
+            String date = rst.getString(1);
+            int count = rst.getInt(2);
             series1.getData().add(new XYChart.Data<>(date, count));
+        }*/
+
+        try {
+            XYChart.Series series1 = dailyReportBO.getlineChart();
+            barChart.getData().addAll(series1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        barChart.getData().addAll(series1);
+
     }
 
     private void setCellValueFactory1() {
@@ -200,7 +182,7 @@ public class DailyReportFormController {
     void txtSearchBydateOnAction(ActionEvent event) {
         if (!txtSearchByDate.getText().isEmpty()) {
             try {
-                double dailyRevenue = DashboardRepo.getDailyRevenue(txtSearchByDate.getText());
+                double dailyRevenue = dailyReportBO.getDailyRevenue(txtSearchByDate.getText());/*DashboardRepo.getDailyRevenue(txtSearchByDate.getText());*/
                 txtDailyRevenueSearch.setText(String.valueOf(dailyRevenue));
             } catch (SQLException e) {
                 throw new RuntimeException(e.getMessage());

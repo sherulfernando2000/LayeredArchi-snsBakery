@@ -27,4 +27,5 @@ public interface EmployeeBO extends SuperBO {
     public  String getEmployeeName(String employeeId) throws SQLException;
 
     public  EmployeeDTO searchEmployeeByName(String nameValue) throws SQLException;
+
 }

@@ -16,9 +16,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
+import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.IngredientBO;
+import lk.ijse.bo.custom.SupplierBO;
+import lk.ijse.bo.custom.SupplierOrderBO;
+import lk.ijse.dto.IngredientDTO;
+import lk.ijse.dto.SupplierDTO;
+import lk.ijse.dto.SupplierOrderDTO;
 import lk.ijse.entity.Ingredient;
-import lk.ijse.model.Supplier;
-import lk.ijse.model.SupplierOrder;
+import lk.ijse.entity.Supplier;
+import lk.ijse.entity.SupplierOrder;
 import lk.ijse.view.SupplierOrderTm;
 import lk.ijse.repository.IngredientRepo;
 import lk.ijse.repository.SupplierOrderRepo;
@@ -106,10 +113,10 @@ public class supplierOrderFormController {
     @FXML
     private TableColumn<?, ?> colIngredientId;
 
+    SupplierOrderBO supplierOrderBO = (SupplierOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER_ORDER);
+    IngredientBO ingredientBO = (IngredientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.INGREDIENT);
 
-
-
-
+    SupplierBO supplierBO = (SupplierBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER);
 
     public void initialize(){
         setCellValueFactory();
@@ -133,8 +140,8 @@ public class supplierOrderFormController {
         ObservableList<SupplierOrderTm> obList = FXCollections.observableArrayList();
 
         try {
-            List<SupplierOrder> orderList = SupplierOrderRepo.getAll();
-            for (SupplierOrder order : orderList) {
+            List<SupplierOrderDTO> orderList = supplierOrderBO.getAllSupplierOrder();
+            for (SupplierOrderDTO order : orderList) {
 
                 String iName= IngredientRepo.getName(order.getIngredientId());
                 String sName = SupplierRepo.getName(order.getSupplierId());
@@ -155,15 +162,16 @@ public class supplierOrderFormController {
             }
 
             tblSupplierOrder.setItems(obList);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+
         }
     }
 
     private void getIngredientName() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> descriptionList = IngredientRepo.getName();
+            List<String> descriptionList = ingredientBO.getIngredientName();
             for (String description: descriptionList) {
                 obList.add(description);
             }
@@ -177,7 +185,7 @@ public class supplierOrderFormController {
     private void getSupplierName() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> descriptionList = SupplierRepo.getName();
+            List<String> descriptionList = supplierOrderBO.getSupplierName();
             for (String description: descriptionList) {
                 obList.add(description);
             }
@@ -201,7 +209,8 @@ public class supplierOrderFormController {
     void btnDeleteOnAction(ActionEvent event) {
         SupplierOrderTm supplierOrderTm = tblSupplierOrder.getSelectionModel().getSelectedItem();
         try {
-            boolean isDeleted = SupplierOrderRepo.detele(supplierOrderTm.getSId(), supplierOrderTm.getIId(),supplierOrderTm.getDate());
+
+            boolean isDeleted = supplierOrderBO.deteleSupplierOrder(supplierOrderTm.getSId(), supplierOrderTm.getIId(),supplierOrderTm.getDate());
             new Alert(Alert.AlertType.CONFIRMATION,"Supplier Order Deleted.").show();
             loadAllSupplierOrder();
             clearFields();
@@ -223,20 +232,20 @@ public class supplierOrderFormController {
         double price = Double.parseDouble(txtPrice.getText());
         double total = qty * price;
 
-        SupplierOrder supplierOrder = new SupplierOrder( ingredientId,supplierId, date, qty, price, total);
+        SupplierOrderDTO supplierOrder = new SupplierOrderDTO( ingredientId,supplierId, date, qty, price, total);
 
         switch (isValied()) {
             case 0:
                 try {
-                    boolean isSaved = SupplierOrderRepo.save(supplierOrder);
+                    boolean isSaved = supplierOrderBO.saveSupplierOrder(supplierOrder);/*SupplierOrderRepo.save(supplierOrder);*/
                     if (isSaved ) {
                         new Alert(Alert.AlertType.CONFIRMATION,"supplier order saved").show();
                         loadAllSupplierOrder();
                         clearFields();
 
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch (SQLException | ClassNotFoundException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 }
                 ;
                 break;
@@ -279,7 +288,7 @@ public class supplierOrderFormController {
     void cmbSupplierNameOnAction(ActionEvent event) {
         String nameValue = cmbSupplierName.getValue();
         try {
-            Supplier supplier = SupplierRepo.searchByName(nameValue);
+            SupplierDTO supplier = supplierBO.searchSupplierByName(nameValue);/*SupplierRepo.searchByName(nameValue);*/
             if (supplier != null) {
                 txtSupplierId.setText(supplier.getId());
 
@@ -296,7 +305,7 @@ public class supplierOrderFormController {
     void cmbIngredientNameOnAction(ActionEvent event) {
         String nameValue = cmbIngredientName.getValue();
         try {
-            Ingredient ingredient = IngredientRepo.searchByName(nameValue);
+            IngredientDTO ingredient = ingredientBO.searchByIngredientName(nameValue);/*IngredientRepo.searchByName(nameValue);*/
             if (ingredient != null) {
                 txtIngredientId.setText(ingredient.getId());
 
