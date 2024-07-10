@@ -10,15 +10,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.EmployeeBO;
+import lk.ijse.bo.custom.ProductBO;
 import lk.ijse.bo.custom.ProductEmployeeBO;
 import lk.ijse.dto.EmployeeDTO;
 import lk.ijse.dto.ProductDTO;
 import lk.ijse.dto.ProductEmployeeDTO;
-import lk.ijse.entity.Employee;
-import lk.ijse.entity.Product;
-import lk.ijse.entity.ProductEmployee;
 import lk.ijse.view.ProductEmployeeTm;
-import lk.ijse.repository.*;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -67,6 +66,8 @@ public class ProductEmployeeFormController {
     private TextField txtProductId;
 
     ProductEmployeeBO productEmployeeBO = (ProductEmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCT_EMPLOYEE);
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.EMPLOYEE);
+    ProductBO productBO = (ProductBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCT);
 
     public void initialize(){
         setCellValueFactory();
@@ -82,8 +83,8 @@ public class ProductEmployeeFormController {
             List<ProductEmployeeDTO> orderList = productEmployeeBO.getAllProductEmployee();//ProductEmployeeRepo.getAll();
             for (ProductEmployeeDTO order : orderList) {
 
-                String eName= EmployeeRepo.getName(order.getEmployeeId());
-                String pName = ProductRepo.getName(order.getProductId());
+                String eName= employeeBO.getEmployeeName(order.getEmployeeId());//EmployeeRepo.getName();
+                String pName = productBO.getProductName(order.getProductId());//ProductRepo.getName();
 
                 ProductEmployeeTm tm = new ProductEmployeeTm(
                         order.getEmployeeId(),

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 public class LoginBOImpl implements LoginBO {
     UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.USER);
+    @Override
     public  boolean checkUserCredential(String userName, String pw) throws SQLException {
         return userDAO.checkCredential(userName,pw);
     }

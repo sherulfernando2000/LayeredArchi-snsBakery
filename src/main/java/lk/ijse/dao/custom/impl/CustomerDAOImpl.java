@@ -12,21 +12,14 @@ import java.util.List;
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public  boolean save(Customer customer) throws SQLException,ClassNotFoundException {
-
-
         String sql = "INSERT INTO customer VALUES (?,?,?,?)";
         return SQLUtil.execute(sql,customer.getId(),customer.getName(),customer.getTel(),customer.getAddress());
-
-
-
 
     }
     @Override
     public  boolean update(Customer customer) throws SQLException,ClassNotFoundException {
         String sql = "UPDATE customer SET cName = ?, email = ?, phoneNo = ? WHERE customerId = ?";
         return SQLUtil.execute(sql,customer.getName(),customer.getAddress(),customer.getTel(),customer.getId());
-
-
 
     }
 

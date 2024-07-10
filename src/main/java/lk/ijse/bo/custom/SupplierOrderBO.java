@@ -2,11 +2,9 @@ package lk.ijse.bo.custom;
 
 import lk.ijse.bo.SuperBO;
 import lk.ijse.dto.SupplierOrderDTO;
-import lk.ijse.entity.SupplierOrder;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface SupplierOrderBO extends SuperBO {

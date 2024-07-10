@@ -4,6 +4,7 @@ import lk.ijse.bo.custom.ProductBO;
 import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.dao.custom.ProductDAO;
+import lk.ijse.dao.custom.WasteDAO;
 import lk.ijse.dto.ProductDTO;
 import lk.ijse.entity.Product;
 import lk.ijse.entity.OrderProductDetail;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class ProductBOImpl implements ProductBO {
     ProductDAO productDAO = (ProductDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.PRODUCT);
+    WasteDAO wasteDAO = (WasteDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.WASTE);
     @Override
     public  boolean saveProduct(ProductDTO product) throws SQLException, ClassNotFoundException {
         return productDAO.save(new Product(product.getId(), product.getName(),product.getCategory(),product.getQty(),product.getPrice()));
@@ -92,5 +94,28 @@ public class ProductBOImpl implements ProductBO {
         Product product = productDAO.searchByName(nameValue);
         return new ProductDTO(product.getId(), product.getName(),product.getCategory(),product.getQty(),product.getPrice());
 
+    }
+    @Override
+    public  boolean saveWaste(List<ProductDTO> dtos) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        for (ProductDTO dto:dtos) {
+            products.add(new Product(dto.getId(), dto.getName(), dto.getCategory(), dto.getQty(), dto.getPrice()));
+        }
+        return wasteDAO.save(products);
+    }
+    @Override
+    public int getLastId() throws SQLException {
+        String sql = "SELECT wastetId FROM wasteManage ";
+        /*PreparedStatement pstm = DbConnection.getInstance().getConnection()
+                .prepareStatement(sql);
+
+        ResultSet resultSet = pstm.executeQuery();*/
+        ResultSet resultSet = SQLUtil.execute(sql);
+        int count = 0;
+        while (resultSet.next()) {
+            count++;
+
+        }
+        return count;
     }
 }

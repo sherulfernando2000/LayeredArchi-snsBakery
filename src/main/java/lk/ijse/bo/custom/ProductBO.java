@@ -35,4 +35,7 @@ public interface ProductBO extends SuperBO {
     public  String getProductName(String productId) throws SQLException;
 
     public  ProductDTO searchProductByName(String nameValue) throws SQLException;
+    public  boolean saveWaste(List<ProductDTO> dtos) throws SQLException;
+
+    public int getLastId() throws SQLException;
 }

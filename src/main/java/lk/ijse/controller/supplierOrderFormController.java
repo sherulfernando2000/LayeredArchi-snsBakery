@@ -23,13 +23,7 @@ import lk.ijse.bo.custom.SupplierOrderBO;
 import lk.ijse.dto.IngredientDTO;
 import lk.ijse.dto.SupplierDTO;
 import lk.ijse.dto.SupplierOrderDTO;
-import lk.ijse.entity.Ingredient;
-import lk.ijse.entity.Supplier;
-import lk.ijse.entity.SupplierOrder;
 import lk.ijse.view.SupplierOrderTm;
-import lk.ijse.repository.IngredientRepo;
-import lk.ijse.repository.SupplierOrderRepo;
-import lk.ijse.repository.SupplierRepo;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -143,8 +137,8 @@ public class supplierOrderFormController {
             List<SupplierOrderDTO> orderList = supplierOrderBO.getAllSupplierOrder();
             for (SupplierOrderDTO order : orderList) {
 
-                String iName= IngredientRepo.getName(order.getIngredientId());
-                String sName = SupplierRepo.getName(order.getSupplierId());
+                String iName= ingredientBO.getIngredientName(order.getIngredientId());//IngredientRepo.getName(order.getIngredientId());
+                String sName = supplierBO.getSupplierName(order.getSupplierId());//SupplierRepo.getName(order.getSupplierId());
 
                 SupplierOrderTm tm = new SupplierOrderTm(
                         order.getSupplierId(),

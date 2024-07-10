@@ -18,9 +18,7 @@ import lk.ijse.Util.Regex;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.EmployeeBO;
 import lk.ijse.dto.EmployeeDTO;
-import lk.ijse.entity.Employee;
 import lk.ijse.view.EmployeeTm;
-import lk.ijse.repository.EmployeeRepo;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 

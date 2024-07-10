@@ -2,13 +2,10 @@ package lk.ijse.bo.custom.impl;
 
 import lk.ijse.bo.custom.IngredientBO;
 import lk.ijse.dao.DAOFactory;
-import lk.ijse.dao.SQLUtil;
 import lk.ijse.dao.custom.IngredientDAO;
-import lk.ijse.dao.custom.impl.IngredientDAOImpl;
 import lk.ijse.dto.IngredientDTO;
 import lk.ijse.entity.Ingredient;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

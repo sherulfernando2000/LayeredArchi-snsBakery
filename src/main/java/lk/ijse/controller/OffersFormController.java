@@ -10,9 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.OffersBO;
 import lk.ijse.dto.CustomerDTO;
-import lk.ijse.entity.Customer;
-import lk.ijse.model.EmailUtil;
-import lk.ijse.repository.CustomerRepo;
+import lk.ijse.Util.EmailUtil;
 
 import javax.mail.MessagingException;
 import java.io.IOException;

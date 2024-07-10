@@ -22,7 +22,7 @@ public class DashBoardBOImpl implements DashBoardBO {
 
     EmployeeDAO employeeDAO = (EmployeeDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.EMPLOYEE);
 
-
+    @Override
     public List<CustomMostSellItemDTO> getMostSellItem() throws SQLException{
         List<CustomMostSellItemDTO> mostSellItemDTOS = new ArrayList<>();
         List<CustomMostSellItem> mostSellItems = queryDAO.getMostSellItem();
@@ -32,16 +32,16 @@ public class DashBoardBOImpl implements DashBoardBO {
        return mostSellItemDTOS;
     }
 
-
+    @Override
     public  double getDailyRevenue(String text) throws SQLException {
         return queryDAO.getDailyRevenue(text);
     }
 
-
+    @Override
     public  int getProductSold(String desc) throws SQLException {
         return queryDAO.getProductSold(desc);
     }
-
+    @Override
     public XYChart.Series getDateCount() throws SQLException {
         //return queryDAO.getDateCount();
 
@@ -62,7 +62,7 @@ public class DashBoardBOImpl implements DashBoardBO {
         }
         return series1;
     }
-
+    @Override
     public  List<String> getProductDescription() throws SQLException {
         return productDAO.getDescription();
 

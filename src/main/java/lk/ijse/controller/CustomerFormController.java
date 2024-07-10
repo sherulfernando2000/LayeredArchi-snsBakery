@@ -9,15 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.CustomerBO;
-import lk.ijse.dao.custom.CustomerDAO;
-import lk.ijse.dao.custom.impl.CustomerDAOImpl;
 import lk.ijse.dto.CustomerDTO;
-import lk.ijse.entity.Customer;
-import lk.ijse.model.EmailUtil;
+import lk.ijse.Util.EmailUtil;
+import lk.ijse.dto.ProductDTO;
 import lk.ijse.view.CustomerTm;
 
 
@@ -186,6 +185,7 @@ public class CustomerFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+
         String id = txtCustomerId.getText();
         String name = txtCustomerName.getText();
         String tel = txtCustomerTel.getText();
@@ -292,6 +292,26 @@ public class CustomerFormController {
         AnchorPane rootNode = FXMLLoader.load(this.getClass().getResource("/View/offers_form.fxml"));
         this.rootNode.getChildren().removeAll();
         this.rootNode.getChildren().setAll(rootNode);
+    }
+
+    @FXML
+    void rowOnMouseClicked(MouseEvent event) {
+        String id = tblCustomer.getSelectionModel().getSelectedItem().getId();
+
+        try {
+            CustomerDTO customer = customerBO.searchCustomerId(id);//searchProductId(id);
+            if (customer != null) {
+                txtCustomerId.setText(customer.getId());
+                txtCustomerName.setText(customer.getName());
+                txtCustomerTel.setText(customer.getTel());
+                txtCustomerAddress.setText(customer.getAddress());
+
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
 }

@@ -13,21 +13,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.DailyReportBO;
-import lk.ijse.dao.SQLUtil;
-import lk.ijse.db.DbConnection;
 import lk.ijse.view.DailyReportTm;
 import lk.ijse.view.DailyWasteReportTm;
-import lk.ijse.repository.DailyReportRepo;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javafx.scene.chart.AreaChart;
-import lk.ijse.repository.DashboardRepo;
 
 public class DailyReportFormController {
 
@@ -160,7 +154,7 @@ DailyReportBO dailyReportBO = (DailyReportBO) BOFactory.getBoFactory().getBO(BOF
     private void loadAllDailyWaste(){
         ObservableList<DailyWasteReportTm> obList = FXCollections.observableArrayList();
         try {
-            List<DailyWasteReportTm> repoList = DailyReportRepo.getAllWaste();
+            List<DailyWasteReportTm> repoList = dailyReportBO.getAllWaste();//DailyReportRepo.getAllWaste();
             for (DailyWasteReportTm dailyWasteReportTm : repoList) {
                 DailyWasteReportTm tm = new DailyWasteReportTm(
                         dailyWasteReportTm.getDay(),

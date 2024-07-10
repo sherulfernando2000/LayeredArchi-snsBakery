@@ -1,12 +1,9 @@
 package lk.ijse.bo.custom;
 
 import lk.ijse.bo.SuperBO;
-import lk.ijse.dao.SQLUtil;
 import lk.ijse.dto.*;
-import lk.ijse.entity.*;
-import lk.ijse.model.PlaceOrder;
 
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.List;
 

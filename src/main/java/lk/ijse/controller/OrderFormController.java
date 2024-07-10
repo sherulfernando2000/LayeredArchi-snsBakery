@@ -13,10 +13,8 @@ import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.OrderBO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.*;
-import lk.ijse.entity.*;
-import lk.ijse.model.*;
 import lk.ijse.view.CartTm;
-import lk.ijse.repository.*;
+
 
 import java.io.IOException;
 import java.sql.Date;

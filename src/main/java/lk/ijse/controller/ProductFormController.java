@@ -14,13 +14,11 @@ import lk.ijse.Util.Regex;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.ProductBO;
 import lk.ijse.dto.ProductDTO;
-import lk.ijse.entity.Product;
 import lk.ijse.view.ProductTm;
-import lk.ijse.repository.ProductRepo;
-import lk.ijse.repository.WasteRepo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductFormController {
 
@@ -62,7 +60,6 @@ public class ProductFormController {
     private TextField txtProductQty;
 
     ProductBO productBO = (ProductBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCT);
-
     public void initialize(){
         getProductCategory();
         setCellValueFactory();
@@ -122,19 +119,19 @@ public class ProductFormController {
     void btnDeleteOnAction(ActionEvent event) {
       //  String id = txtProductId.getText();
         String id = tblProduct.getSelectionModel().getSelectedItem().getId();
-
-        try {
-            boolean isDeleted = productBO.deleteProduct(id);
-            if (isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION,"product deleted successfully.").show();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,"Are you sure to delete?",ButtonType.OK,ButtonType.CANCEL);
+        Optional<ButtonType> action = alert.showAndWait();
+        if (action.get() == ButtonType.OK) {
+            try {
+                boolean isDeleted = productBO.deleteProduct(id);
+                new Alert(Alert.AlertType.CONFIRMATION,"Product Deleted.",ButtonType.OK).show();
                 clearFields();
                 loadAllProducts();
-
+            } catch (SQLException | ClassNotFoundException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-
-        } catch (SQLException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+
 
 
     }
@@ -244,11 +241,11 @@ public class ProductFormController {
     }
 
     @FXML
-    void btnWasteOnAction(ActionEvent event) throws SQLException {
-            List<Product> product = ProductRepo.getAll();
+    void btnWasteOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+            List<ProductDTO> product = productBO.getAllProduct();
 
         try {
-            boolean isSave = WasteRepo.save(product);
+            boolean isSave = productBO.saveWaste(product);//WasteRepo.save(product);
             if(isSave) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Waste save!").show();
             } else {
@@ -302,7 +299,7 @@ public class ProductFormController {
                 txtProductQty.setText(String.valueOf(product.getQty()));
                 txtProductIPrice.setText(String.valueOf(product.getPrice()));
             } else {
-                new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+                new Alert(Alert.AlertType.INFORMATION, "product not found!").show();
             }
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();

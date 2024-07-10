@@ -4,12 +4,8 @@ import lk.ijse.bo.SuperBO;
 import lk.ijse.dto.EmployeeDTO;
 import lk.ijse.dto.ProductDTO;
 import lk.ijse.dto.ProductEmployeeDTO;
-import lk.ijse.entity.Employee;
-import lk.ijse.entity.Product;
-import lk.ijse.entity.ProductEmployee;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductEmployeeBO extends SuperBO {

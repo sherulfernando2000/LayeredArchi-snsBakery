@@ -15,8 +15,6 @@ import lk.ijse.Util.Regex;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.SignupBO;
 import lk.ijse.dto.UserDTO;
-import lk.ijse.entity.User;
-import lk.ijse.repository.UserRepo;
 
 import java.io.IOException;
 import java.sql.SQLException;

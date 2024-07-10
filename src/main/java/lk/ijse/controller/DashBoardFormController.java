@@ -18,9 +18,7 @@ import javafx.util.Duration;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.DashBoardBO;
 import lk.ijse.dto.CustomMostSellItemDTO;
-import lk.ijse.view.DailyRevenueTm;
-import lk.ijse.view.MostSellItemTm;
-import lk.ijse.repository.*;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -123,31 +121,27 @@ public class DashBoardFormController {
     @FXML
     void btnEmployeeOnAction(ActionEvent event) throws IOException {
         navigateTo("/View/employee_form.fxml");
-
-        /*AnchorPane rootNode = FXMLLoader.load(this.getClass().getResource("/view/employee_form.fxml"));
-        this.rootNode.getChildren().removeAll();
-        this.rootNode.getChildren().setAll(rootNode);*/
     }
 
     public void initialize() throws SQLException {
-        //int noOfCustomer = CustomerRepo.getAll().size();
+
         int noOfCustomer = 0;
         try {
             noOfCustomer = dashBoardBO.getAllCustomer().size();
             txtNoOfCustomers.setText(String.valueOf(noOfCustomer));
-            //int noOfOrders = OrderRepo.getOderCount();
+
             int noOfOrders = dashBoardBO.getOderCount();
             txtNoOfOrders.setText(String.valueOf(noOfOrders));
-            //int noOfProduct = ProductRepo.getAll().size();
+
             int noOfProduct = dashBoardBO.getAllProduct().size();
             txtNoOfProducts.setText(String.valueOf(noOfProduct));
-            //int noOfEmployee = EmployeeRepo.getAll().size();
+
             int noOfEmployee = dashBoardBO.getAllEmployee().size();
             txtNoOfEmployee.setText(String.valueOf(noOfEmployee));
-            //double dailyRevenue = DailyReportRepo.getDailyRevenue();
+
             double dailyRevenue = dashBoardBO.getDailyRevenue();
             txtDailyRevenue.setText(String.valueOf(dailyRevenue));
-            //double monthlyRevenue = weeklyReportRepo.getMonthlyRevenue();
+
             double monthlyRevenue = dashBoardBO.getMonthlyRevenue();
             txtMonthlyRevenue.setText(String.valueOf(monthlyRevenue));
 

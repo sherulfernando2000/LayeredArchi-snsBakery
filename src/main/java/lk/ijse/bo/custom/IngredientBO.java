@@ -1,13 +1,9 @@
 package lk.ijse.bo.custom;
 
 import lk.ijse.bo.SuperBO;
-import lk.ijse.dao.SQLUtil;
 import lk.ijse.dto.IngredientDTO;
-import lk.ijse.entity.Ingredient;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IngredientBO extends SuperBO {

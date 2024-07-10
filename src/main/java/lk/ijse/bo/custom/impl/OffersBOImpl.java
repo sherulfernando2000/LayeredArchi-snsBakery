@@ -12,6 +12,7 @@ import java.util.List;
 
 public class OffersBOImpl implements OffersBO {
     CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.Customer);
+    @Override
     public List<CustomerDTO> getAllCustomer() throws SQLException,ClassNotFoundException{
 
         List<CustomerDTO> customerDTOS = new ArrayList<>();

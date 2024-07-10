@@ -14,13 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.WeeklyReportBO;
-import lk.ijse.db.DbConnection;
 import lk.ijse.view.WeeklyReportTm;
-import lk.ijse.repository.weeklyReportRepo;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 

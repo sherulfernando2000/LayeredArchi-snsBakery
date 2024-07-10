@@ -1,21 +1,14 @@
 package lk.ijse.bo.custom.impl;
 
-import javafx.scene.control.Alert;
 import lk.ijse.bo.custom.OrderBO;
 import lk.ijse.dao.DAOFactory;
-import lk.ijse.dao.SQLUtil;
 import lk.ijse.dao.custom.*;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.*;
 import lk.ijse.entity.*;
-import lk.ijse.model.PlaceOrder;
-import lk.ijse.repository.OrderProductDetailRepo;
-import lk.ijse.repository.OrderRepo;
-import lk.ijse.repository.PaymentRepo;
-import lk.ijse.repository.ProductRepo;
+
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

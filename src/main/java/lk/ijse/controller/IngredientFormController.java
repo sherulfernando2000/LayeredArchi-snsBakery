@@ -17,9 +17,7 @@ import lk.ijse.Util.Regex;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.IngredientBO;
 import lk.ijse.dto.IngredientDTO;
-import lk.ijse.entity.Ingredient;
 import lk.ijse.view.IngredientTm;
-import lk.ijse.repository.IngredientRepo;
 
 import java.io.IOException;
 import java.sql.SQLException;

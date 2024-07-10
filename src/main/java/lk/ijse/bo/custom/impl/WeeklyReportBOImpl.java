@@ -14,14 +14,15 @@ import java.util.List;
 public class WeeklyReportBOImpl implements WeeklyReportBO {
 
     QueryDAO queryDAO = (QueryDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.QUERY);
+    @Override
     public List<WeeklyReportTm> getAllWeek() throws SQLException{
         return queryDAO.getAllWeek();
     }
-
+    @Override
     public  double getMonthlyRevenue() throws SQLException{
         return queryDAO.getMonthlyRevenue();
     }
-
+    @Override
     public XYChart.Series getlineChart1(){
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("Bakery");

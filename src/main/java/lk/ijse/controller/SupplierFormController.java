@@ -14,9 +14,7 @@ import lk.ijse.Util.Regex;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.SupplierBO;
 import lk.ijse.dto.SupplierDTO;
-import lk.ijse.entity.Supplier;
 import lk.ijse.view.SupplierTm;
-import lk.ijse.repository.SupplierRepo;
 import javafx.scene.layout.AnchorPane;
 
 
@@ -200,7 +198,7 @@ public class SupplierFormController {
         String id = txtSupplierId.getText();
 
         try {
-            Supplier supplier = SupplierRepo.searchId(id);
+            SupplierDTO supplier = supplierBO.searchSupplierId(id);//SupplierRepo.searchId(id);
             if (supplier != null) {
                 txtSupplierId.setText(supplier.getId());
                 txtSupplierName.setText(supplier.getName());
@@ -210,7 +208,7 @@ public class SupplierFormController {
                 new Alert(Alert.AlertType.INFORMATION, "supplier not found!").show();
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

@@ -44,7 +44,7 @@
                               <String fx:value="white-bg" />
                            </styleClass>
                            <children>
-                              <TableView fx:id="tblCustomer" layoutX="15.2" layoutY="16.0" prefHeight="318.0" prefWidth="765.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="tblCustomer" layoutX="15.2" layoutY="16.0" onMouseClicked="#rowOnMouseClicked" prefHeight="318.0" prefWidth="765.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
                                   <TableColumn fx:id="colCustomerId" prefWidth="147.99999845027924" text="Customer ID" />
                                     <TableColumn fx:id="colCustomerName" prefWidth="226.4000244140625" text="Customer Name" />

@@ -3,7 +3,6 @@ package lk.ijse.bo.custom.impl;
 import lk.ijse.bo.custom.CustomerBO;
 import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custom.CustomerDAO;
-import lk.ijse.dao.custom.impl.CustomerDAOImpl;
 import lk.ijse.dto.CustomerDTO;
 import lk.ijse.entity.Customer;
 

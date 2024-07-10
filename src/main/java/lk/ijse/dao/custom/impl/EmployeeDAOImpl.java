@@ -35,7 +35,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         String sql = "SELECT * FROM employee WHERE employeeId = ?";
         ResultSet resultSet = SQLUtil.execute(sql,id);
 
-
         while (resultSet.next()){
             String emp_id = resultSet.getString(1);
             String name = resultSet.getString(2);
@@ -76,7 +75,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return empList;
 
     }
-
+    @Override
     public  List<String> getName() throws SQLException {
         String sql = "SELECT eName FROM employee";
         ResultSet resultSet = SQLUtil.execute(sql);
@@ -86,7 +85,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         }
         return nameList;
     }
-
+    @Override
     public  String getName(String employeeId) throws SQLException {
         String sql = "SELECT eName FROM employee WHERE employeeId = ?";
         ResultSet resultSet = SQLUtil.execute(sql);
@@ -100,7 +99,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 
     }
-
+    @Override
     public  Employee searchByName(String nameValue) throws SQLException {
         String sql = "SELECT * FROM employee WHERE eName = ?";
         ResultSet resultSet = SQLUtil.execute(sql,nameValue);

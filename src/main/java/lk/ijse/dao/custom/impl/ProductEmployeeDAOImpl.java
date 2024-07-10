@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductEmployeeDAOImpl implements ProductEmployeeDAO {
+    @Override
     public  boolean save(ProductEmployee productEmployee) throws SQLException {
         String sql = "INSERT INTO productemployeedetail VALUES (?,?,?)";
         /*PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
@@ -22,7 +23,7 @@ public class ProductEmployeeDAOImpl implements ProductEmployeeDAO {
 
 
     }
-
+    @Override
     public  List<ProductEmployee> getAll() throws SQLException {
         String sql = "SELECT * FROM productemployeedetail";
 
@@ -44,7 +45,7 @@ public class ProductEmployeeDAOImpl implements ProductEmployeeDAO {
         }
         return orderList;
     }
-
+    @Override
     public  boolean delete(String eId, String pId, String assignmentType) throws SQLException {
         String sql = "DELETE FROM productemployeedetail WHERE employeeId = ? AND productId = ? AND  assignment_type = ? ;\n";
         /*PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);

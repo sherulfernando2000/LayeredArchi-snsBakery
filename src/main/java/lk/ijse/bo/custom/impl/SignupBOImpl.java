@@ -10,10 +10,12 @@ import java.sql.SQLException;
 
 public class SignupBOImpl implements SignupBO {
     UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.USER);
+    @Override
     public  boolean saveUser(UserDTO user) throws SQLException, ClassNotFoundException {
 
         return userDAO.save(new User(user.getUserName(),user.getPassword(),user.getPhoneNo(),user.getRole()));
     }
+    @Override
 
     public  boolean checkUserCredential(String userName, String pw) throws SQLException {
         return userDAO.checkCredential(userName,pw);

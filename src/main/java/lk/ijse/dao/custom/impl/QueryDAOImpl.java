@@ -20,6 +20,7 @@ import java.util.List;
 
 public class QueryDAOImpl implements QueryDAO {
     //DASHBOARD
+    @Override
     public List<CustomMostSellItem> getMostSellItem() throws SQLException {
         String sql = "SELECT p.pName AS MostSoldProductName, SUM(opd.qty) AS TotalQuantitySold\n" +
                 "FROM orderProductDetail opd\n" +
@@ -48,7 +49,7 @@ public class QueryDAOImpl implements QueryDAO {
 
     }
 
-
+    @Override
     public  double getDailyRevenue(String text) throws SQLException {
         String sql = "SELECT date, SUM(totalAmount) AS DailyRevenue\n" +
                 "FROM payment\n" +
@@ -70,7 +71,7 @@ public class QueryDAOImpl implements QueryDAO {
         return dailyRevenue;
     }
 
-
+    @Override
     public  int getProductSold(String desc) throws SQLException {
         String sql = "SELECT p.pName AS ProductName, SUM(opd.qty) AS QuantitySold\n" +
                 "FROM orderProductDetail opd\n" +
@@ -91,7 +92,7 @@ public class QueryDAOImpl implements QueryDAO {
         }
         return qty;
     }
-
+    @Override
     public List<CustomEntity> getDateCount() throws SQLException {
         List<CustomEntity> dailyRevenueTmList = new ArrayList<>();
         PreparedStatement stm = null;
@@ -115,33 +116,10 @@ public class QueryDAOImpl implements QueryDAO {
         }
         return dailyRevenueTmList;
 
-        /*while (true) {
-            try {
-                if (!rst.next()) break;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            String date = null;
-            try {
-                date = rst.getString(1);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            int count = 0;
-            try {
-                count = rst.getInt(2);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            DailyRevenueTm dailyRevenueTm = new DailyRevenueTm(date,count);
-            dailyRevenueTmList.add(dailyRevenueTm);
-        }
-        return dailyRevenueTmList;*/
     }
 
     //DAILYREPORT
+    @Override
     public  List<DailyReportTm> getAll() throws SQLException {
         String sql = "SELECT\n" +
                 "    o.date AS Date,\n" +
@@ -161,10 +139,6 @@ public class QueryDAOImpl implements QueryDAO {
                 "    p.pName\n" +
                 "ORDER BY\n" +
                 "    o.date;\n";
-        /*PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-
-        ResultSet resultSet = pstm.executeQuery();
-*/
 
         ResultSet resultSet = SQLUtil.execute(sql);
         List<DailyReportTm> dailyRepoList = new ArrayList<>();
@@ -180,7 +154,7 @@ public class QueryDAOImpl implements QueryDAO {
         }
         return dailyRepoList;
     }
-
+    @Override
     public  double getDailyRevenue() throws SQLException {
         String sql = "SELECT\n" +
                 "    DATE_FORMAT(date, '%Y-%m-%d') AS PaymentDate,\n" +
@@ -205,7 +179,7 @@ public class QueryDAOImpl implements QueryDAO {
         }
         return total;
     }
-
+    @Override
     public  List<DailyWasteReportTm> getAllWaste() throws SQLException {
         String sql = "SELECT w.date, p.pName, w.wasteQty, w.disposeMethod\n" +
                 "FROM wastemanage w\n" +
@@ -232,6 +206,7 @@ public class QueryDAOImpl implements QueryDAO {
     }
 
     //Weekly report
+    @Override
     public List<WeeklyReportTm> getAllWeek() throws SQLException {
         String sql = "SELECT\n" +
                 "    DATE_FORMAT(MIN(o.date), '%Y-%m-%d') AS WeekStartDate,\n" +
@@ -264,6 +239,8 @@ public class QueryDAOImpl implements QueryDAO {
         return weeklyRepoList;
     }
 
+
+    @Override
     public  double getMonthlyRevenue() throws SQLException {
         String sql = "SELECT\n" +
                 "    DATE_FORMAT(date, '%Y-%m') AS PaymentMonth,\n" +
@@ -290,6 +267,7 @@ public class QueryDAOImpl implements QueryDAO {
         return total;
     }
 
+    @Override
     public ResultSet weeklyRevenue() throws SQLException {
         ResultSet rst = SQLUtil.execute("SELECT\n" +
                 "    DATE_FORMAT(MIN(o.date), '%Y-%m-%d') AS WeekStartDate,\n" +

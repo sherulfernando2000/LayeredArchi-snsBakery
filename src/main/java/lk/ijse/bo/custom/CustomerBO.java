@@ -2,7 +2,6 @@ package lk.ijse.bo.custom;
 
 import lk.ijse.bo.SuperBO;
 import lk.ijse.dto.CustomerDTO;
-import lk.ijse.entity.Customer;
 
 import java.sql.SQLException;
 import java.util.List;
